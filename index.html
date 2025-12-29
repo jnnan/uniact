@@ -121,13 +121,166 @@
             height: 20px;
         }
 
+        /* Author Information Styles */
+        .authors-section {
+            margin-bottom: 8px;
+            max-width: 1100px;
+        }
+
+        .authors-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2px 18px;
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+
+        .author-name {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .author-name sup {
+            font-size: 0.6rem;
+            color: var(--primary-blue);
+        }
+
+        .equal-contrib {
+            color: #fbbf24;
+        }
+
+        .affiliations-section {
+            margin-bottom: 8px;
+            max-width: 1100px;
+        }
+
+        .affiliation-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1px 16px;
+            margin-bottom: 1px;
+            line-height: 1.3;
+        }
+
+        .affiliation {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+        }
+
+        .affiliation sup {
+            font-size: 0.55rem;
+            color: var(--primary-blue);
+        }
+
+        .contact-info {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .contact-info .equal-note {
+            margin-right: 16px;
+        }
+
+        .project-link {
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+
+        .project-link a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .project-link a:hover {
+            text-decoration: underline;
+        }
+
         .hero-description {
             font-size: 1.25rem;
             color: #e2e8f0;
             max-width: 800px;
-            margin-bottom: 30px; /* Reduced slightly to make room for embed */
+            margin-bottom: 30px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
             font-weight: 400;
+        }
+
+        /* Abstract Section Styles */
+        .abstract-section {
+            max-width: 1000px;
+            margin-bottom: 35px;
+            width: 100%;
+        }
+
+        .abstract-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 35px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .abstract-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+        }
+
+        .abstract-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .abstract-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .abstract-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-align: justify;
+        }
+
+        .abstract-text strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .abstract-text .highlight {
+            color: #60a5fa;
+            font-weight: 500;
         }
 
         /* NEW: Dataset Embed Styles */
@@ -251,9 +404,10 @@
         /* --- Section 3: Enhanced Gallery --- */
         .gallery-section {
             width: 100%;
-            background-color: #0f172a;
+            background: linear-gradient(180deg, #0f172a 0%, #020617 50%, #0f172a 100%);
             padding: 100px 40px;
             position: relative;
+            overflow: hidden;
         }
 
         .gallery-section::before {
@@ -262,48 +416,97 @@
             top: 20%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0,0,0,0) 70%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0,0,0,0) 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .gallery-section::after {
+            content: '';
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, rgba(0,0,0,0) 60%);
             z-index: 0;
             pointer-events: none;
         }
 
         .gallery-container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
 
+        /* Bento Grid Layout */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: auto;
+            gap: 24px;
         }
 
         .video-card {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27), box-shadow 0.4s ease;
+            backdrop-filter: blur(20px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            z-index: 1;
         }
 
         .video-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6),
+                        0 0 40px -10px rgba(59, 130, 246, 0.3);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        /* Card sizes for bento layout */
+        .video-card.large {
+            grid-column: span 4;
+            grid-row: span 2;
+        }
+
+        .video-card.medium {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .video-card.wide {
+            grid-column: span 3;
+            grid-row: span 1;
         }
 
         .video-wrapper {
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
-            background: #000;
+            flex: 1;
+            min-height: 200px;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+            overflow: hidden;
+        }
+
+        .video-card.large .video-wrapper {
+            min-height: 350px;
         }
 
         .video-wrapper video {
@@ -313,30 +516,147 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .video-card:hover .video-wrapper video {
+            transform: scale(1.05);
+        }
+
+        /* Video overlay gradient */
+        .video-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Play button overlay */
+        .video-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(59, 130, 246, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-card:hover .video-overlay {
+            opacity: 1;
+        }
+
+        .video-overlay svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+            margin-left: 4px;
         }
 
         .card-content {
-            padding: 25px;
+            padding: 24px 28px;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+        }
+
+        .card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .card-badge svg {
+            width: 14px;
+            height: 14px;
         }
 
         .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
             color: white;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            line-height: 1.3;
         }
 
         .card-title::before {
             content: '';
             display: block;
-            width: 8px;
-            height: 8px;
-            background-color: var(--primary-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary-blue);
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .card-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Card number indicator */
+        .card-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 4rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.03);
+            line-height: 1;
+            z-index: 0;
+        }
+
+        .video-card.large .card-number {
+            font-size: 6rem;
+        }
+
+        @media (max-width: 1200px) {
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .video-card.large,
+            .video-card.medium,
+            .video-card.wide {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .gallery-section {
+                padding: 60px 20px;
+            }
         }
 
         .card-desc {
@@ -357,7 +677,6 @@
 
         @media (max-width: 1024px) {
             h1 { font-size: 2.5rem; }
-            .video-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -384,6 +703,53 @@
         <div class="hero-content">
             <h1>UniAct: Unified Motion Generation and Action Streaming for Humanoid Robots</h1>
 
+            <!-- Author Information -->
+            <div class="authors-section">
+                <div class="authors-row">
+                    <span class="author-name">Nan Jiang<sup>1,2,3,9,11<span class="equal-contrib">*</span></sup></span>
+                    <span class="author-name">Zimo He<sup>4,2,9,11<span class="equal-contrib">*</span></sup></span>
+                    <span class="author-name">Wanhe Yu<sup>1,3,5,9,11</sup></span>
+                    <span class="author-name">Lexi Pang<sup>1,3,5,9,11</sup></span>
+                    <span class="author-name">Yunhao Li<sup>6,3,9,11</sup></span>
+                    <span class="author-name">Hongjie Li<sup>7,3,9,11</sup></span>
+                </div>
+                <div class="authors-row">
+                    <span class="author-name">Jieming Cui<sup>1,2,3,9,11</sup></span>
+                    <span class="author-name">Yuhan Li<sup>8,2</sup></span>
+                    <span class="author-name">Yizhou Wang<sup>4,9,10</sup></span>
+                    <span class="author-name">Yixin Zhu<sup>3,1,9,11,12</sup>✉</span>
+                    <span class="author-name">Siyuan Huang<sup>2,9</sup>✉</span>
+                </div>
+            </div>
+
+            <div class="affiliations-section">
+                <div class="affiliation-row">
+                    <span class="affiliation"><sup>1</sup> Institute for AI, Peking University</span>
+                    <span class="affiliation"><sup>2</sup> Beijing Institute for General Artificial Intelligence (BIGAI)</span>
+                    <span class="affiliation"><sup>3</sup> School of Psychological and Cognitive Sciences, Peking University</span>
+                </div>
+                <div class="affiliation-row">
+                    <span class="affiliation"><sup>4</sup> School of Computer Science, Peking University</span>
+                    <span class="affiliation"><sup>5</sup> Yuanpei College, Peking University</span>
+                    <span class="affiliation"><sup>6</sup> School of Foreign Languages, Peking University</span>
+                    <span class="affiliation"><sup>7</sup> School of EECS, Peking University</span>
+                </div>
+                <div class="affiliation-row">
+                    <span class="affiliation"><sup>8</sup> Huazhong University of Science and Technology</span>
+                    <span class="affiliation"><sup>9</sup> State Key Lab of General AI</span>
+                    <span class="affiliation"><sup>10</sup> Nat'l Eng. Research Center of Visual Technology</span>
+                </div>
+                <div class="affiliation-row">
+                    <span class="affiliation"><sup>11</sup> Beijing Key Laboratory of Behavior and Mental Health, Peking University</span>
+                    <span class="affiliation"><sup>12</sup> Embodied Intelligence Lab, PKU-Wuhan Institute for Artificial Intelligence</span>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <span class="equal-note">* Equal contribution</span>
+                <span>✉ yixin.zhu@pku.edu.cn, syhuang@bigai.ai</span>
+            </div>
+
             <!-- NEW: Link Buttons -->
             <div class="links-container">
                 <a href="#" class="link-btn">
@@ -408,10 +774,17 @@
                 </a>
             </div>
 
-            <!-- Introduction / Subtitle -->
-            <p class="hero-description">
-                UniAct, a unified framework that enables humanoid robots to understand and execute diverse multimodal instructions including natural language commands, music rhythms, trajectory following, and motion tracking in real-time.
-            </p>
+            <!-- Abstract Section -->
+            <div class="abstract-section">
+                <div class="abstract-card">
+                    <div class="abstract-header">
+                        <span class="abstract-label">Abstract</span>
+                    </div>
+                    <p class="abstract-text">
+                        We propose <strong>UniAct</strong>, a two-stage framework integrating a fine-tuned MLLM with a causal streaming pipeline, enabling humanoid robots to execute multimodal instructions with <span class="highlight">sub-500ms latency</span>. By unifying inputs through a shared discrete codebook via FSQ, UniAct ensures <span class="highlight">cross-modal alignment</span> while constraining motions to a physically grounded manifold. This approach yields a <strong>19% improvement</strong> in the success rate of zero-shot tracking of imperfect reference motions. We validate UniAct on <strong>UA-Net</strong>, our 20-hour humanoid motion benchmark, demonstrating robust generalization across diverse real-world scenarios. Our results mark a critical step toward responsive, general-purpose humanoid assistants capable of seamless interaction through unified perception and control.
+                    </p>
+                </div>
+            </div>
 
             <!-- NEW: Dataset Embed -->
             <div class="dataset-wrapper">
@@ -455,66 +828,106 @@
 
             <div class="video-grid">
                 
-                <!-- Card 1 -->
-                <div class="video-card">
+                <!-- Card 1 - Large Featured -->
+                <div class="video-card large">
+                    <span class="card-number">01</span>
                     <div class="video-wrapper">
                         <video controls loop muted playsinline>
                             <source src="text.mp4" type="video/mp4">
                         </video>
+                        <div class="video-overlay">
+                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
                     </div>
                     <div class="card-content">
+                        <div class="card-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            Language Input
+                        </div>
                         <h3 class="card-title">Text to Motion</h3>
-                        <p class="card-desc">Generating complex humanoid actions directly from natural language prompts.</p>
+                        <p class="card-desc">Generating complex humanoid actions directly from natural language prompts with high fidelity and semantic understanding.</p>
                     </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="video-card">
+                <!-- Card 2 - Medium -->
+                <div class="video-card medium">
+                    <span class="card-number">02</span>
                     <div class="video-wrapper">
                         <video controls loop muted playsinline>
                             <source src="music.mp4" type="video/mp4">
                         </video>
+                        <div class="video-overlay">
+                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
                     </div>
                     <div class="card-content">
+                        <div class="card-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                            Audio Input
+                        </div>
                         <h3 class="card-title">Music to Motion</h3>
-                        <p class="card-desc">Synchronizing robot movements with musical beats and rhythm patterns.</p>
+                        <p class="card-desc">Synchronizing movements with musical beats and rhythm patterns.</p>
                     </div>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="video-card">
+                <!-- Card 3 - Medium -->
+                <div class="video-card medium">
+                    <span class="card-number">03</span>
                     <div class="video-wrapper">
                         <video controls loop muted playsinline>
                             <source src="trajectory.mp4" type="video/mp4">
                         </video>
+                        <div class="video-overlay">
+                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
                     </div>
                     <div class="card-content">
+                        <div class="card-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                            Path Control
+                        </div>
                         <h3 class="card-title">Trajectory Control</h3>
-                        <p class="card-desc">Precise path following and spatial navigation in diverse environments.</p>
+                        <p class="card-desc">Precise path following and spatial navigation.</p>
                     </div>
                 </div>
 
-                <!-- Card 4 -->
-                <div class="video-card">
+                <!-- Card 4 - Wide -->
+                <div class="video-card wide">
+                    <span class="card-number">04</span>
                     <div class="video-wrapper">
                         <video controls loop muted playsinline>
                             <source src="cross_modal.mp4" type="video/mp4">
                         </video>
+                        <div class="video-overlay">
+                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
                     </div>
                     <div class="card-content">
+                        <div class="card-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            Multi-Modal
+                        </div>
                         <h3 class="card-title">Cross-Modal Generation</h3>
                         <p class="card-desc">Translating inputs across different modalities for robust action synthesis.</p>
                     </div>
                 </div>
 
-                <!-- Card 5 -->
-                <div class="video-card">
+                <!-- Card 5 - Wide -->
+                <div class="video-card wide">
+                    <span class="card-number">05</span>
                     <div class="video-wrapper">
                         <video controls loop muted playsinline>
                             <source src="gvhmr.mp4" type="video/mp4">
                         </video>
+                        <div class="video-overlay">
+                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
                     </div>
                     <div class="card-content">
+                        <div class="card-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            Human Reference
+                        </div>
                         <h3 class="card-title">Human Motion Imitating</h3>
                         <p class="card-desc">GVHMR integration for real-time motion retargeting and imitating.</p>
                     </div>

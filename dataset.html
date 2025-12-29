@@ -16,6 +16,47 @@
         #progressBar {
             transition: width 0.5s ease-in-out;
         }
+        
+        /* Auto-scrolling carousel styles */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+        
+        .carousel-track {
+            display: flex;
+            gap: 12px;
+            animation: scroll 40s linear infinite;
+            width: max-content;
+        }
+        
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .video-card {
+            flex-shrink: 0;
+            width: 240px;
+        }
+        
+        .video-card video {
+            transition: opacity 0.3s;
+        }
+        
+        .video-card:hover video {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="text-gray-900 min-h-screen p-6 font-sans">
@@ -37,9 +78,36 @@
         </div>
 
         <!-- Description Text -->
-        <p class="text-center text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-sm text-lg">
+        <p class="text-center text-white/90 mb-6 max-w-2xl mx-auto leading-relaxed drop-shadow-sm text-lg">
             Explore UA-Net: A library of 10,153 language-annotated robot motions. Use keywords to search and visualize the outputs instantly.
         </p>
+
+        <!-- Random Video Showcase -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-semibold text-white/90 drop-shadow-sm">Sample Videos</h2>
+                <button id="refreshBtn" onclick="loadRandomVideos()" 
+                        class="flex items-center gap-1 px-3 py-1 text-xs font-medium text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+            <div class="carousel-container">
+                <div id="randomVideos" class="carousel-track">
+                    <!-- Random videos will be loaded here -->
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                    <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+                </div>
+            </div>
+        </div>
 
         <!-- Progress Bar (Visible during init) -->
         <div id="progressContainer" class="max-w-2xl mx-auto mb-6">
@@ -73,6 +141,7 @@
     <script>
         let model = null;
         let database = [];
+        let videoMapping = [];
 
         // UI Elements
         const statusEl = document.getElementById('status');
@@ -82,6 +151,82 @@
         const progressContainer = document.getElementById('progressContainer');
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
+
+        // Load random videos from video_mapping.json
+        async function loadRandomVideos() {
+            const container = document.getElementById('randomVideos');
+            
+            // Show loading state
+            container.innerHTML = Array(8).fill(`
+                <div class="video-card aspect-video bg-white/10 rounded-lg animate-pulse"></div>
+            `).join('');
+
+            try {
+                // Load video mapping if not already loaded
+                if (videoMapping.length === 0) {
+                    const response = await fetch('./video_mapping.json');
+                    if (!response.ok) throw new Error("Could not find video_mapping.json");
+                    videoMapping = await response.json();
+                }
+
+                // Pick 12 random videos
+                const shuffled = [...videoMapping].sort(() => Math.random() - 0.5);
+                const randomVideos = shuffled.slice(0, 12);
+
+                // Create video card HTML
+                const createVideoCard = (video) => `
+                    <div class="video-card group relative bg-black/40 rounded-lg overflow-hidden border border-white/10 hover:border-white/30 transition-all">
+                        <div class="aspect-video">
+                            <video class="w-full h-full object-contain" muted loop playsinline autoplay preload="metadata">
+                                <source src="${video.url}" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+                            <p class="text-white text-xs font-medium truncate" title="${video.filename}">${video.filename.replace('.mp4', '')}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Render videos twice for seamless infinite scroll
+                const videosHtml = randomVideos.map(createVideoCard).join('');
+                container.innerHTML = videosHtml + videosHtml;
+
+                // Setup hover behavior for videos
+                setupVideoHoverBehavior();
+
+            } catch (err) {
+                console.error("Failed to load random videos:", err);
+                container.innerHTML = `<div class="text-center text-white/60 text-sm py-4 w-full">Could not load sample videos</div>`;
+            }
+        }
+
+        // Handle video autoplay and pause on hover
+        function setupVideoHoverBehavior() {
+            const container = document.getElementById('randomVideos');
+            const videoCards = container.querySelectorAll('.video-card');
+            
+            videoCards.forEach(card => {
+                const video = card.querySelector('video');
+                
+                // Autoplay all videos
+                video.play().catch(() => {});
+                
+                // On hover: show controls, keep playing this one
+                card.addEventListener('mouseenter', () => {
+                    video.controls = true;
+                    video.muted = false;
+                });
+                
+                // On mouse leave: hide controls, mute again
+                card.addEventListener('mouseleave', () => {
+                    video.controls = false;
+                    video.muted = true;
+                });
+            });
+        }
+
+        // Load random videos on page load
+        loadRandomVideos();
 
         function updateProgress(percent, message) {
             progressBar.style.width = `${percent}%`;
