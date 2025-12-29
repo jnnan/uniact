@@ -57,6 +57,105 @@
         .video-card:hover video {
             opacity: 1;
         }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-body {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .modal-body ul {
+            margin-top: 12px;
+            padding-left: 20px;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .modal-btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+        }
+
+        .modal-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .modal-btn-accept {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .modal-btn-accept:hover {
+            background: #2563eb;
+        }
     </style>
 </head>
 <body class="text-gray-900 min-h-screen p-6 font-sans">
@@ -68,13 +167,13 @@
             <h1 class="text-4xl font-bold text-white drop-shadow-md tracking-tight">UA-Net Dataset</h1>
 
             <!-- Download Button (Blue, No Glow) -->
-            <a href="./database.json" download="database.json"
+            <button onclick="showDownloadModal()"
                class="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-full transition-all hover:-translate-y-0.5 active:scale-95">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 Download
-            </a>
+            </button>
         </div>
 
         <!-- Description Text -->
@@ -138,10 +237,52 @@
         <div id="results" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </div>
 
+    <!-- Download License Modal -->
+    <div id="downloadModal" class="modal-overlay" onclick="hideDownloadModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 class="modal-title">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                License Agreement
+            </h2>
+            <div class="modal-body">
+                <p>Before downloading the <strong>UA-Net Dataset</strong>, please read and accept the following terms:</p>
+                <ul>
+                    <li>✓ This dataset is for <strong>research purposes only</strong>.</li>
+                    <li>✓ <strong>Commercial use is strictly prohibited</strong>.</li>
+                    <li>✓ You agree to cite our work in any publications using this dataset.</li>
+                    <li>✓ Redistribution of this dataset is not permitted without prior consent.</li>
+                    <li>✓ Only <strong>2000 motion sequences</strong> are publicly available at this time.</li>
+                </ul>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="hideDownloadModal()">Cancel</button>
+                <button class="modal-btn modal-btn-accept" onclick="acceptAndDownload()">Accept & Download</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let model = null;
         let database = [];
         let videoMapping = [];
+
+        // Modal functions
+        function showDownloadModal() {
+            document.getElementById('downloadModal').classList.add('active');
+        }
+
+        function hideDownloadModal(event) {
+            if (!event || event.target === event.currentTarget) {
+                document.getElementById('downloadModal').classList.remove('active');
+            }
+        }
+
+        function acceptAndDownload() {
+            hideDownloadModal();
+            window.open('https://drive.google.com/drive/folders/1tn1XAihIj4LAe2n9dEv7SEBFCAfdnbwU?usp=drive_link', '_blank');
+        }
 
         // UI Elements
         const statusEl = document.getElementById('status');
